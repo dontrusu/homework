@@ -1,0 +1,35 @@
+.maindiv{
+	display: flex;
+}
+#div1{
+	box-sizing: border-box;
+	border: 1px solid black;
+	width: 32%;
+	height: 30%;
+}
+#div2{
+	box-sizing: border-box;
+	border: 1px solid black;
+	width: 40%;
+	height: 30%;
+}
+#div3{
+	box-sizing: border-box;
+	border: 1px solid black;
+	width: 32%;
+	height: 30%;
+}
+#div1_1{
+	box-sizing: border-box;
+	width: 51%;
+	-webkit-transform: rotate(90deg);
+	-ms-transform: (90deg);
+	transform: rotate(90deg);
+	margin-left: 25%;
+	transition: transform 1s; 
+}
+#div1_1:hover{							/*Восьмое задание*/
+	-webkit-transform: rotate(0deg);
+	-ms-transform: (0deg);
+	transform: rotate(0deg);
+}

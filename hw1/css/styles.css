@@ -1,0 +1,38 @@
+h1{
+	background-color: red;
+}
+h2{
+	background-color: yellow;
+}
+h3{
+	background-color: blue;
+}
+
+p{
+	background-color: pink;
+	color: #87238C;
+}
+body{
+	background-image: url(https://odesign.ru/wp-content/uploads/107-8039-r1.jpg);
+}
+
+.headline{
+	text-align: center;
+	background-color: #A825A6;
+	color: #ED5C5C;
+}
+
+#lorem{
+	text-align: center;
+	border: solid white;
+}
+div p{
+	color: black;
+	font-weight: bold;
+	background-color: white;
+}
+
+div > h2{
+	color: navy;
+	background-color: #40DBE3;
+}
