@@ -45,7 +45,7 @@ intRandom(10) // вернет 0 до 10 включительно
 
 function greetAll(){
 	var name = "";
-    for(i = 0; i<arguments.length; i++){
+    for(var i = 0; i<arguments.length; i++){
         name += arguments[i] + ", ";
     }
 	alert(`Hello ${name} `);
@@ -58,7 +58,7 @@ greetAll("Superman", "SpiderMan", "Captain Obvious") // выводит alert "He
 
 function sum(){
     var plus = 0;
-    for(i = 0; i<arguments.length; i++){
+    for(var i = 0; i<arguments.length; i++){
         plus += arguments[i];
     }
     return plus;
