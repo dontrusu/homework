@@ -69,24 +69,61 @@ sum(10,20,40,100) // => 170
 
 // Union
 
+function a(a){
+    alert(a)
+}
+
+function cube(i){
+    return Math.pow(i, 3)
+}
+
+function avg2(a, b){
+    return (a + b)/2;
+}
+
+function sum3(a = 0, b = 0, c = 0){
+    return a+b+c;
+}
+
+function intRandom(a = 0, b = 0){
+    var c = a -0.5 + Math.random() * (b - a + 1);
+    c = Math.round(c);
+    return c;
+}
+
+function greetAll(){
+	var name = "";
+    for(i = 0; i<arguments.length; i++){
+        name += arguments[i] + ", ";
+    }
+	alert(`Hello ${name} `);
+}
+
+function sum(){
+    var plus = 0;
+    for(i = 0; i<arguments.length; i++){
+        plus += arguments[i];
+    }
+    return plus;
+}
+
 var sample = prompt("Введите название задания");
 switch (sample.toLowerCase()){
-	case "a": a("hello")
+	case "a": a()
 		break
-	case "cube": cube(5)
+	case "cube": cube()
 		break
-	case "avg2": avg2(3, 5)
+	case "avg2": avg2()
 		break
-	case "sum3": sum3(3, 6, 9)
+	case "sum3": sum3()
 		break
-	case "intRandom": intRandom(1, 10)
+	case "intRandom": intRandom()
 		break
 	case "greetAll": greetAll()
 		break
-	case "sum": sum(3, 7)
+	case "sum": sum()
 		break					
 }
-
 // Union declarative
 
 var union = {
