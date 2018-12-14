@@ -14,7 +14,7 @@ function cube(i){
 
 // avg2
 
-function avg2(a, b){
+function avg2(a = 0, b = 0){
     return (a + b)/2;
 }
 avg2(1,2) // возвращает 1.5
@@ -71,18 +71,30 @@ sum(10,20,40,100) // => 170
 
 var sample = prompt("Введите название задания");
 switch (sample.toLowerCase()){
-	case "a": a()
+	case "a": a("hello")
 		break
-	case "cube": cube()
+	case "cube": cube(5)
 		break
-	case "avg2": avg2()
+	case "avg2": avg2(3, 5)
 		break
-	case "sum3": sum3()
+	case "sum3": sum3(3, 6, 9)
 		break
-	case "intRandom": intRandom()
+	case "intRandom": intRandom(1, 10)
 		break
 	case "greetAll": greetAll()
 		break
-	case "sum": sum()
+	case "sum": sum(3, 7)
 		break					
+}
+
+// Union declarative
+
+var union = {
+	a: a(),
+	cube: cube(),
+	avg2: avg2(),
+	sum3: sum3(),
+	intRandom: intRandom(),
+	greetAll: greetAll(),
+	sum3: sum3(),
 }
