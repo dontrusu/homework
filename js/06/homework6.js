@@ -109,19 +109,19 @@ function sum(){
 
 var sample = prompt("Введите название задания");
 switch (sample.toLowerCase()){
-	case "a": a()
+	case "a": a("Hello")
 		break
-	case "cube": cube()
+	case "cube": cube(4)
 		break
-	case "avg2": avg2()
+	case "avg2": avg2(5, 6)
 		break
-	case "sum3": sum3()
+	case "sum3": sum3(3, 5, 7)
 		break
-	case "intRandom": intRandom()
+	case "intRandom": intRandom(2, 10)
 		break
-	case "greetAll": greetAll()
+	case "greetAll": greetAll("Superman", "SpiderMan")
 		break
-	case "sum": sum()
+	case "sum": sum(2, 5, 8)
 		break					
 }
 // Union declarative
