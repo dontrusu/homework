@@ -39,8 +39,52 @@ var persons = [a, b, c, (d = {name: "Victor", surname: "Victorov",})]
 
 // loop of persons
 
-for(var i = 0; i<4; i++){
+for(var i = 0; i<persons.length; i++){
 	console.log(persons[i]);
 }
 
 //loop of fields loop of persons
+
+for(var key in persons){
+	for(var names in persons[key]){
+		if(names === "name" || names === "surname"){
+			console.log(persons[key][names])
+        }
+	}
+}
+
+// loop of loop of keys
+
+for(i = 0; i<persons.length; i++){
+	var names = Object.keys(persons[i])
+	for(j = 0; j<names.length; j++){
+		if(names[j] === "name" || names[j] === "surname"){
+			console.log(persons[i][names[j]])
+        }
+	}
+}
+
+//loop of loop with optional fields
+
+
+
+//fullName
+
+for(i=0;i<persons.length; i++){
+	persons[i]["fullName"] = persons[i].name + " " + persons[i].surname
+	if(persons[i].fathername !== undefined){
+		persons[i]["fullName"] += " " + persons[i].fathername
+	}
+}
+
+//serialize
+
+var str = JSON.stringify(persons);
+
+// deserialize
+
+var e = {"name":"John","surname":"Cena","age":"41"};
+persons[4] = e;
+
+// HTML
+
