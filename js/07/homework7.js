@@ -15,11 +15,25 @@ for(var i = 1; i<10; i++){
 		td.style.height = "40px"
 		td.onmouseover = function(event) {
  			event.target.style.background = "#ffcccc";
- 			//this.parentElement.style.backgroundColor = "#ffcccc";
+ 			this.parentElement.style.backgroundColor = "#ffcccc";
+ 			var x = this.parentElement.parentElement.children
+ 			var z = this.cellIndex
+ 			console.log()
+ 			for(var i = 0; i<x.length; i++){
+ 				x[i].children[z].style.backgroundColor = "#ffcccc"
+ 			}
+
 		}
 		td.onmouseout = function(event) {
-	  		event.target.style.background = "";
-	  		//this.parentElement.style.backgroundColor = "";
+  			event.target.style.background = "";
+  			this.parentElement.style.backgroundColor = "";
+  			var x = this.parentElement.parentElement.children
+ 			var z = this.cellIndex
+ 			console.log()
+ 			for(var i = 0; i<x.length; i++){
+ 				x[i].children[z].style.backgroundColor = ""
+ 			}
+
   	}
 
 	}
