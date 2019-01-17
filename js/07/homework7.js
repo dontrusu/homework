@@ -14,7 +14,6 @@ for(var i = 1; i<10; i++){
 		td.style.width = "40px"
 		td.style.height = "40px"
 		td.onmouseover = function(event) {
- 			event.target.style.background = "black";
  			this.parentElement.style.backgroundColor = "#ffcccc";
  			var x = this.parentElement.parentElement.children
  			var z = this.cellIndex
@@ -22,10 +21,10 @@ for(var i = 1; i<10; i++){
  			for(var i = 0; i<x.length; i++){
  				x[i].children[z].style.backgroundColor = "#ffcccc"
  			}
+ 			event.target.style.background = "#e6ffff";
 
 		}
 		td.onmouseout = function(event) {
-  			event.target.style.background = "";
   			this.parentElement.style.backgroundColor = "";
   			var x = this.parentElement.parentElement.children
  			var z = this.cellIndex
@@ -33,8 +32,9 @@ for(var i = 1; i<10; i++){
  			for(var i = 0; i<x.length; i++){
  				x[i].children[z].style.backgroundColor = ""
  			}
+ 			event.target.style.background = "";
 
-  	}
+  		}
 
 	}
 }

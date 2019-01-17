@@ -11,11 +11,15 @@ function makeProfileTimer(){
 // makeSaver
 
 function makeSaver(func){
-	var x = func();
-	function save(){
-		return x 
+	var flag = false;
+	var result;
+	return function(){
+		if(flag == false){
+			result = func();
+		}
+		flag = true;
+		return result;
 	}
-	return save;
 }
 
 //Final Countdown
@@ -34,4 +38,8 @@ function makeSaver(func){
 })(5)
 
 //myBind
+
+
+
+//sum
 
