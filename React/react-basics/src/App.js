@@ -20,6 +20,7 @@ class Inputs extends React.Component {
     handleClick = () => {
       this.props.onSend(this.nick.value, this.message.value)
       this.message.value = ""
+      this.handleChange()
     }
 
     handleChange = () => {
@@ -46,6 +47,18 @@ let ChatMessage = (props) => {
     )
 }
 
+class ChatHistory extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div className = "chat">
+        {this.props.message.reverse().map((object, i) =>  <ChatMessage nick = {object.nick} message = {object.message} key = {i} />)}
+      </div>
+      )
+  }
+}
 
 class Chat extends React.Component {
   constructor(props) {
@@ -63,9 +76,7 @@ class Chat extends React.Component {
 
   render() {
     return(
-      <div className = "chat">
-        {this.state.msg.reverse().map((object, i) =>  <ChatMessage nick = {object.nick} message = {object.message} key = {i} />)}
-      </div>  
+        <ChatHistory message = {this.state.msg} /> 
         )
   }
 }
