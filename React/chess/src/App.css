@@ -7,7 +7,6 @@ body {
   height: 6em;
   background: transparent;
   border: 1px solid black;
-  padding: 0.3em;
 }
 
 .square:focus {
@@ -26,6 +25,12 @@ body {
   text-align: center;
 }
 
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
 .line:nth-child(even) .square:nth-child(odd){
   background: #006699;
 }
@@ -37,3 +42,8 @@ body {
 .figure {
   font-size: 4em;
 }
+
+.square:active {
+  box-shadow: 0 0 10px 5px rgba(221, 221, 221, 1);
+}
+
