@@ -59,7 +59,6 @@ class Board extends React.Component {
 
   }
 
-  
    isCellAvailable(board, figureX, figureY, x, y){
     if(figureX === null){
       return
