@@ -33,9 +33,9 @@ class Square extends React.Component {
   super(props)
   }
   render() {
-    console.log(this.props)
     return (
-      <button className = "square" style = {{border: this.props.available === true ? "3px solid red" : ""}}>
+      <button className = "square" style = {{border: this.props.available === true ? "3px solid red" : ""}} 
+              onClick = {this.props.available === true ? this.props.onClick : ""}>
         {this.props.children}
       </button>
     )
@@ -46,7 +46,7 @@ var board = [
       ['wr','wn','wb','wq','wk','wb','wn','wr'],
       ['wp','wp','wp','wp','wp','wp','wp','wp'],
       [' ',' ',' ',' ',' ',' ',' ',' '],
-      [' ',' ',' ',' ','br ',' ',' ',' '],
+      [' ',' ',' ',' ','bk ',' ',' ',' '],
       [' ',' ',' ',' ',' ',' ',' ',' '],
       [' ',' ',' ',' ',' ',' ',' ',' '],
       ['bp','bp','bp','bp','bp','bp','bp','bp'],
@@ -55,12 +55,15 @@ var board = [
 class Board extends React.Component {
   constructor(props){
     super(props)
-    this.state = {board: board, currentX: 0, currentY: 0}
+    this.state = {board: board, currentX: null, currentY: null}
 
   }
 
   
    isCellAvailable(board, figureX, figureY, x, y){
+    if(figureX === null){
+      return
+    }
     //фигура, которой ходим
     const figure  = board[figureY][figureX]
     //находится ли вражеская фигура в проверяемой позиции x,y
@@ -103,27 +106,54 @@ class Board extends React.Component {
         q(){
           return(figures.r() || figures.b())
         },
+        k(){
+          return(
+            (y === figureY+1 && x === figureX+1) ||
+            (y === figureY-1 && x === figureX-1) ||
+            (y === figureY-1 && x === figureX+1) ||
+            (y === figureY+1 && x === figureX-1) ||
+            (y === figureY && x === figureX+1) ||
+            (y === figureY && x === figureX-1) ||
+            (y === figureY-1 && x === figureX) ||
+            (y === figureY+1 && x === figureX)
+          )
+        }
     }
     return figures[figure[1]]()
   }
 
   renderSquare(color, name, x,y) {
-
     this.handleClick = () => {
+      //чтобы сбрасывать выбраную фигуру
       this.setState({currentX: x, currentY: y})
-      this.isCellAvailable(this.state.board, this.state.currentX, this.state.currentY, x, y)
+      if(this.state.currentX === null){
+        return
+      }
+      //чтобы при новом клике на саму фигуру и на дружискую, они не пропадали 
+      if(this.state.board[this.state.currentY][this.state.currentX][0] === this.state.board[y][x][0]) {
+       return
+     }
+     //чтобы при ходе на клетку со вражеской фигура, фигура не пропадала(ВЫДАЕТ ОШИБКУ: figures[figure[1]] is not a function) 
+     if(this.state.board[this.state.currentY][this.state.currentX][0] !== (this.state.board[y][x][0])&&
+      this.isCellAvailable(this.state.board, this.state.currentX, this.state.currentY, x, y) !== true){
+      return
+     }
+      var newBoard = [...board]
+      newBoard[y][x] = newBoard[this.state.currentY][this.state.currentX]
+      newBoard[this.state.currentY][this.state.currentX] = " "
+      this.setState({board: newBoard, currentX: null, currentY: null})
     }
 
-    this.isCellAvailable(this.state.board, this.state.currentX, this.state.currentY, x, y)
-
     return(
-      <Square available = {this.isCellAvailable(this.state.board, this.state.currentX, this.state.currentY, x, y)}>
+      <Square available = {this.isCellAvailable(this.state.board, this.state.currentX, this.state.currentY, x, y)} 
+             onClick = {this.handleClick}>
         <Figure color = {color} name = {name} onClick = {this.handleClick} x={x} y={y}/>
       </Square>
     )
   }
 
   render(){
+    console.log(this.state)
       let filledBoard = []
     for(let i = 0; i < 8; i++){
       let boardLine = []
@@ -132,7 +162,7 @@ class Board extends React.Component {
         boardLine.push(this.renderSquare(str[0], str[1], j, i))
       }
       filledBoard.push(<div className = "line">{boardLine}</div>)
-    }    console.log(this.state)
+    }  
     return(
       <>
         {filledBoard}
