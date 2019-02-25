@@ -46,7 +46,7 @@ var board = [
       ['wr','wn','wb','wq','wk','wb','wn','wr'],
       ['wp','wp','wp','wp','wp','wp','wp','wp'],
       [' ',' ',' ',' ',' ',' ',' ',' '],
-      [' ',' ',' ',' ','bk ',' ',' ',' '],
+      [' ',' ',' ',' ',' ',' ',' ',' '],
       [' ',' ',' ',' ',' ',' ',' ',' '],
       [' ',' ',' ',' ',' ',' ',' ',' '],
       ['bp','bp','bp','bp','bp','bp','bp','bp'],
@@ -65,6 +65,9 @@ class Board extends React.Component {
     }
     //фигура, которой ходим
     const figure  = board[figureY][figureX]
+    if(figure === " "){
+      return
+    }
     //находится ли вражеская фигура в проверяемой позиции x,y
     const isEnemyInCell = board[y][x][0] !== figure[0] 
     if (board[y][x][0] === figure[0]) return false;
@@ -132,7 +135,7 @@ class Board extends React.Component {
       if(this.state.board[this.state.currentY][this.state.currentX][0] === this.state.board[y][x][0]) {
        return
      }
-     //чтобы при ходе на клетку со вражеской фигура, фигура не пропадала(ВЫДАЕТ ОШИБКУ: figures[figure[1]] is not a function) 
+     //чтобы при ходе на клетку со вражеской фигура, фигура не пропадала 
      if(this.state.board[this.state.currentY][this.state.currentX][0] !== (this.state.board[y][x][0])&&
       this.isCellAvailable(this.state.board, this.state.currentX, this.state.currentY, x, y) !== true){
       return
