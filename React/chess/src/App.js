@@ -124,10 +124,8 @@ class Board extends React.Component {
     return figures[figure[1]]()
   }
 
-  renderSquare(color, name, x,y) {
-    this.handleClick = () => {
-      //чтобы сбрасывать выбраную фигуру
-      this.setState({currentX: x, currentY: y})
+  moveFigure(x, y){
+    this.setState({currentX: x, currentY: y})
       if(this.state.currentX === null){
         return
       }
@@ -144,8 +142,12 @@ class Board extends React.Component {
       newBoard[y][x] = newBoard[this.state.currentY][this.state.currentX]
       newBoard[this.state.currentY][this.state.currentX] = " "
       this.setState({board: newBoard, currentX: null, currentY: null})
-    }
+  }
 
+  renderSquare(color, name, x,y) {
+    this.handleClick = () => {
+      this.moveFigure(x, y)
+    }
     return(
       <Square available = {this.isCellAvailable(this.state.board, this.state.currentX, this.state.currentY, x, y)} 
              onClick = {this.handleClick}>
