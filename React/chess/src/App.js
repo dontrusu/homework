@@ -55,7 +55,7 @@ var board = [
 class Board extends React.Component {
   constructor(props){
     super(props)
-    this.state = {board: board, currentX: null, currentY: null}
+    this.state = {board: board, currentX: null, currentY: null, turn: "w"}
 
   }
 
@@ -75,8 +75,17 @@ class Board extends React.Component {
         p(){           
            //белые пешки ходят вниз
            const deltaY = figure[0] === 'w' ? +1 : -1;
+           //первый ход может быть на две клетки
+           var firstMove = 0;
+           if(figure[0] === "w" && figureY === 1){
+             firstMove = 2
+           }else{
+            if(figure[0] === "b" && figureY === 6){
+              firstMove = -2
+            }
+           }
            return (
-               (figureY + deltaY === y) && //всегда след. строка доски
+               ((figureY + deltaY === y) || (figureY + firstMove === y)) && //всегда след. строка доски
                (
                    (figureX === x && board[figureY+deltaY][figureX] === " ") || 
                    (isEnemyInCell && Math.abs(figureX - x) === 1 && board[y][x][0] !== " ") 
@@ -138,10 +147,15 @@ class Board extends React.Component {
       this.isCellAvailable(this.state.board, this.state.currentX, this.state.currentY, x, y) !== true){
       return
      }
+     /*нельзя ходить не в свою очередь */
+     if(this.state.turn !== this.state.board[this.state.currentY][this.state.currentX][0]){
+      return 
+     }
+     /*перерисовка доски*/
       var newBoard = [...board]
       newBoard[y][x] = newBoard[this.state.currentY][this.state.currentX]
       newBoard[this.state.currentY][this.state.currentX] = " "
-      this.setState({board: newBoard, currentX: null, currentY: null})
+      this.setState({board: newBoard, currentX: null, currentY: null, /*чья очередь ходить*/turn: newBoard[y][x][0] === "w" ? "b" : "w"})
   }
 
   renderSquare(color, name, x,y) {
