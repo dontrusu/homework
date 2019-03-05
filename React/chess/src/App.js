@@ -13,6 +13,8 @@ class Figure extends React.Component {
     super(props)
   }
   render() {
+    //нельзя кликать не в свою очередь 
+    let disabled = this.props.color === this.props.turn ? this.props.onClick : ""
     let color = {w: "white", b: "black"}
     let figure = {
       p: "chess-pawn",
@@ -23,7 +25,10 @@ class Figure extends React.Component {
       r: "chess-rook"
     }
     return (
-      <FontAwesomeIcon className = "figure" icon={figure[this.props.name]} color = {color[this.props.color]} onClick = {this.props.onClick}/>
+      <FontAwesomeIcon className = "figure"
+                       icon={figure[this.props.name]} 
+                       color = {color[this.props.color]} 
+                       onClick = {disabled} />
     )
   }
 }
@@ -34,7 +39,8 @@ class Square extends React.Component {
   }
   render() {
     return (
-      <button className = "square" style = {{border: this.props.available === true ? "3px solid red" : ""}} 
+      <button className = "square" 
+              style = {{border: this.props.available === true ? "3px solid yellow" : ""}} 
               onClick = {this.props.available === true ? this.props.onClick : ""}>
         {this.props.children}
       </button>
@@ -48,7 +54,7 @@ var board = [
       [' ',' ',' ',' ',' ',' ',' ',' '],
       [' ',' ',' ',' ',' ',' ',' ',' '],
       [' ',' ',' ',' ',' ',' ',' ',' '],
-      [' ',' ',' ',' ',' ',' ',' ',' '],
+      [' ',' ',' ',' ','wr ',' ',' ',' '],
       ['bp','bp','bp','bp','bp','bp','bp','bp'],
       ['br','bn','bb','bq','bk','bb','bn','br'] ]
 
@@ -56,7 +62,6 @@ class Board extends React.Component {
   constructor(props){
     super(props)
     this.state = {board: board, currentX: null, currentY: null, turn: "w"}
-
   }
 
    isCellAvailable(board, figureX, figureY, x, y){
@@ -85,7 +90,7 @@ class Board extends React.Component {
             }
            }
            return (
-               ((figureY + deltaY === y) || (figureY + firstMove === y)) && //всегда след. строка доски
+               ((figureY + deltaY === y) || (figureY + firstMove === y && board[figureY+firstMove][figureX] === " " && x === figureX)) && //всегда след. строка доски
                (
                    (figureX === x && board[figureY+deltaY][figureX] === " ") || 
                    (isEnemyInCell && Math.abs(figureX - x) === 1 && board[y][x][0] !== " ") 
@@ -93,13 +98,175 @@ class Board extends React.Component {
            )
         },
         r(){
+          var notBlocked1 = true
+          if(x === figureX && y < figureY) {
+            for(let i = 1; i<(figureY-y); i++){
+              if(notBlocked1 === false){
+                break
+              }else if(isEnemyInCell === true && board[y][x][0] !== " "){
+                for(let j = 1; j<(figureY-y); j++){
+                  if(notBlocked1 === false){
+                    break
+                  }
+                  notBlocked1 = (board[y+j][figureX] === " ")
+                }
+                if(notBlocked1 === true){
+                  break
+                }
+              }
+            notBlocked1 = (board[y+i][figureX] === " ")
+            }
+          }
+
+          var notBlocked2 = true
+          if(x > figureX && y === figureY) {
+            for(let i = 1; i<(x - figureX); i++){
+              if(notBlocked2 === false){
+                break
+              }else if(isEnemyInCell === true && board[y][x][0] !== " "){
+                for(let j = 1; j<(x - figureX); j++){
+                  if(notBlocked2 === false){
+                    break
+                  }
+                  notBlocked2 = (board[figureY][x-j] === " ")
+                }
+                if(notBlocked2 === true){
+                  break
+                }
+              }
+            notBlocked2 = (board[figureY][x-i] === " ")
+            }
+          }
+
+          var notBlocked3 = true
+          if(y > figureY && x === figureX) {
+            for(let i = 1; i<(y - figureY); i++){
+              if(notBlocked3 === false){
+                break
+              }else if(isEnemyInCell === true && board[y][x][0] !== " "){
+                for(let j = 1; j<(y - figureY); j++){
+                  if(notBlocked3 === false){
+                    break
+                  }
+                  notBlocked3 = (board[y-j][figureX] === " ")
+                }
+                if(notBlocked3 === true){
+                  break
+                }
+              }
+            notBlocked3 = (board[y-i][figureX] === " ")
+            }
+          }
+
+          var notBlocked4 = true
+          if(x < figureX && y === figureY) {
+            for(let i = 1; i<(figureX - x); i++){
+              if(notBlocked4 === false){
+                break
+              }else if(isEnemyInCell === true && board[y][x][0] !== " "){
+                for(let j = 1; j<(figureX - x); j++){
+                  if(notBlocked4 === false){
+                    break
+                  }
+                  notBlocked4 = (board[figureY][x+j] === " ")
+                }
+                if(notBlocked4 === true){
+                  break
+                }
+              }
+            notBlocked4 = (board[figureY][x+i] === " ")
+            }
+          }
+
           return(
-            y === figureY && x !== figureX || y !== figureY && x === figureX  
+            (y === figureY && x !== figureX || y !== figureY && x === figureX) && notBlocked1 && notBlocked2 && notBlocked3 && notBlocked4
           )
         },
         b(){
+          const delta = figureX - figureY;
+          //для верхней левой ветки
+          var notBlocked1 = true
+          if(y < figureY && x < figureX) {
+            for(let i = 1; i<(figureY-y); i++){
+              if(notBlocked1 === false){
+                break
+              }else if(isEnemyInCell === true && board[y][x][0] !== " "){
+                for(let j = 1; j<(figureY-y); j++){
+                  if(notBlocked1 === false){
+                    break
+                  }
+                  notBlocked1 = (board[y+j][y+j+delta] === " ")
+                }
+                if(notBlocked1 === true){
+                  break
+                }
+              }
+            notBlocked1 = (board[y+i][y+i+delta] === " ")
+            }
+          }
+          //для верхней правой 
+          var notBlocked2 =true
+          if(y < figureY && x > figureX){
+            for(let i = 1; i<(figureY - y); i++){
+              if(notBlocked2 === false){
+                break
+              }else if(isEnemyInCell === true && board[y][x][0] !== " "){
+                for(let j = 1; j<(figureY - y); j++){
+                  if(notBlocked2 === false){
+                    break
+                  }
+                  notBlocked2 = (board[y+j][x-j] === " ")
+                }
+                if(notBlocked2 === true){
+                  break
+                }
+              }
+              notBlocked2 = (board[y+i][x-i] === " ")
+            }
+          }
+          //для нижней левой
+          var notBlocked3 =true
+          if(y > figureY && x < figureX){
+            for(let i = 1; i<(y - figureY); i++){
+              if(notBlocked3 === false){
+                break
+              }else if(isEnemyInCell === true && board[y][x][0] !== " "){
+                for(let j = 1; j<(y - figureY); j++){
+                  if(notBlocked3 === false){
+                    break
+                  }
+                  notBlocked3 = (board[y-j][x+j] === " ")
+                }
+                if(notBlocked3 === true){
+                  break
+                }
+              }
+              notBlocked3 = (board[y-i][x+i] === " ")
+            }
+          }
+          //для нижней правой ветки
+          var notBlocked4 = true
+          if(y > figureY && x > figureX){
+            for(let i = 1; i<(y - figureY); i++){
+              if(notBlocked4 === false){
+                break
+              }else if(isEnemyInCell === true && board[y][x][0] !== " "){
+                for(let j = 1; j<(y - figureY); j++){
+                  if(notBlocked4 === false){
+                    break
+                  }
+                  notBlocked4 = (board[y - j][y - j + delta] === " ")
+                }
+                if(notBlocked4 === true){
+                  break
+                }
+              }
+            notBlocked4 = (board[y - i][y - i+delta] === " ")
+            }
+          }
           return(
-            (x-y) === (figureX - figureY) || (x+y) === (figureX + figureY) 
+            ((x-y) === (figureX - figureY) || (x+y) === (figureX + figureY)) && (notBlocked1 && notBlocked2 && notBlocked3 && notBlocked4)
+
           )
         },
         n(){
@@ -133,23 +300,27 @@ class Board extends React.Component {
     return figures[figure[1]]()
   }
 
-  moveFigure(x, y){
+  moveFigure(board, x, y){
     this.setState({currentX: x, currentY: y})
       if(this.state.currentX === null){
         return
       }
       //чтобы при новом клике на саму фигуру и на дружискую, они не пропадали 
-      if(this.state.board[this.state.currentY][this.state.currentX][0] === this.state.board[y][x][0]) {
+      if(board[this.state.currentY][this.state.currentX][0] === board[y][x][0]) {
        return
      }
      //чтобы при ходе на клетку со вражеской фигура, фигура не пропадала 
-     if(this.state.board[this.state.currentY][this.state.currentX][0] !== (this.state.board[y][x][0])&&
-      this.isCellAvailable(this.state.board, this.state.currentX, this.state.currentY, x, y) !== true){
+     if(board[this.state.currentY][this.state.currentX][0] !== (board[y][x][0])&&
+      this.isCellAvailable(board, this.state.currentX, this.state.currentY, x, y) !== true){
       return
      }
      /*нельзя ходить не в свою очередь */
-     if(this.state.turn !== this.state.board[this.state.currentY][this.state.currentX][0]){
+     if(this.state.turn !== board[this.state.currentY][this.state.currentX][0]){
       return 
+     }
+     /*нельзя бить короля*/
+     if(this.isCellAvailable(board, this.state.currentX, this.state.currentY, x, y) === true && board[y][x][1] === "k"){
+      return
      }
      /*перерисовка доски*/
       var newBoard = [...board]
@@ -160,12 +331,11 @@ class Board extends React.Component {
 
   renderSquare(color, name, x,y) {
     this.handleClick = () => {
-      this.moveFigure(x, y)
+      this.moveFigure(this.state.board, x, y)
     }
     return(
-      <Square available = {this.isCellAvailable(this.state.board, this.state.currentX, this.state.currentY, x, y)} 
-             onClick = {this.handleClick}>
-        <Figure color = {color} name = {name} onClick = {this.handleClick} x={x} y={y}/>
+      <Square available = {this.isCellAvailable(this.state.board, this.state.currentX, this.state.currentY, x, y)} onClick = {this.handleClick}>
+        <Figure color = {color} name = {name} onClick = {this.handleClick} x={x} y={y} turn = {this.state.turn} />
       </Square>
     )
   }
