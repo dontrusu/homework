@@ -27,7 +27,7 @@ const chatReducer = (state, action) => {
   return state;
 }
 
-
+const actionDefault     = () => ({ type: 'SET_STATUS', status: 'DEFAULT', payload: null, error: null })
 const actionPending     = () => ({ type: 'SET_STATUS', status: 'PENDING', payload: {data: []}, error: null })
 const actionResolved    = payload => ({ type: 'SET_STATUS', status: 'RESOLVED', payload, error: null })
 const actionRejected    = error => ({ type: 'SET_STATUS', status: 'REJECTED', payload: null, error })
@@ -59,31 +59,25 @@ const messageReducer = (state, action) => {
   if(state === undefined) {
     return {status: null}
   }
-  if(action.type === "MESSAGE_SENDING"){
-    return{status: action.type, payload: action.payload, error: action.error}
-  }
-  if(action.type === "MESSAGE_SENT"){
-    return{status: action.type, payload: action.payload, error: action.error}
-  }
-  if(action.type === "MESSAGE_FAIL"){
-    return{status: action.type, payload: action.payload, error: action.error}
+  if(action.type === "SET_STATUS"){
+    return{status: action.status, payload: action.payload, error: action.error}
   }
   return state
 }
 
-const actionMessageSending = () => ({type: "MESSAGE_SENDING", payload: null, error: null})
-const actionMessageSent = (payload) => ({type: "MESSAGE_SENT", payload, error: null})
-const actionMessageFail = (error) => ({type: "MESSAGE_FAIL", payload: null, error})
 
 const actionSend = (name, message) => {
   return async dispatch => {
-    dispatch(actionMessageSending())
+    dispatch(actionPending())
     try {
       let payload = jsonPost("http://students.a-level.com.ua:10012", {func: 'addMessage', nick: name, message: message})
-      dispatch(actionMessageSent(payload))
+      dispatch(actionResolved(payload))
     }
     catch(error){
-      dispatch(actionMessageFail())
+      dispatch(actionRejected())
+    }
+    finally {
+      dispatch(actionDefault())
     }
   }
 }
@@ -101,26 +95,25 @@ const store = (createStore(reducers, applyMiddleware(thunk)))
 class Inputs extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {disabled: true, nick: "", message: ""}
+    this.state = {nick: "", message: ""}
   }
 
     handleClick = () => {
-      this.props.onSend(this.nick.value, this.message.value)
-      this.message.value = ""
-      this.handleChange()
+      this.props.onSend(this.state.nick, this.state.message)
     }
-
-    handleChange = () => {
-      this.setState({disabled: !(this.nick.value && this.message.value)})
-    }
-
     render(){
+      let mapStatusToColor = {
+      RESOLVED: 'lightgreen',
+      REJECTED: 'red',
+      PENDING: 'lightgray',
+      DEFAULT: '',
+    }
       console.log('<Component /> Props: ',this.props)
       return (
         <div>
-          <input type = "text" placeholder = "nick" ref = {c => this.nick = c} onChange = {this.handleChange}/>
-          <input type = "text" placeholder = "message" ref = {c => this.message = c} onChange = {this.handleChange}/>
-          <button onClick = {(this.handleClick)} disabled = {this.state.disabled}>Send</button>
+          <input type = "text" placeholder = "nick" value = {this.state.nick} onChange = {e => this.setState({nick: e.target.value})}/>
+          <input type = "text" placeholder = "message" value = {this.state.message} style={{backgroundColor: mapStatusToColor[this.props.status]}} onChange = {e => this.setState({message: e.target.value})}/>
+          <button onClick = {(this.handleClick)} disabled = {this.props.status === 'PENDING'}>Send</button>
         </div>
         )
   }
