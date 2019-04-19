@@ -58,8 +58,9 @@ function parseObject(obj){ // передается распарсенный об
         let nestedArr = parseObject(obj[key])  // если ключ является объектом или массивом, переходим к перебору его ключей 
                                               //и записываем вернувшийся массив
         let objectLength = Object.keys(obj[key]).length  // узнаем число ключей для отрисовки рядом с именем объекта
-        arr.push(<ObjectComponent objectKey={key} objectValue={nestedArr} objectLength={objectLength} />) // компонент в котрый передается имя ключа
-                                                                                                          // и массив вложеных элементов 
+        arr.push(<ObjectComponent objectKey={key}                 // компонент в котрый передается имя ключа
+                                  objectValue={nestedArr}         // и массив вложеных элементов 
+                                  objectLength={objectLength} />)                                                                                               
       }else{ // если не объект или массив, записывам как простую строку 
         arr.push(<div>
                   <li>
