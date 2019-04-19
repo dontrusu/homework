@@ -1,0 +1,32 @@
+*{
+  margin: 0;
+}
+
+#root {
+  display: flex;
+}
+
+.space {
+  width: 5em;
+}
+
+[contentEditable], button:focus {
+  outline: 0px solid transparent;
+}
+
+button {
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  padding-left: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+span:focus {
+  background: #ffff66;
+}
