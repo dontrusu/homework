@@ -51,7 +51,7 @@ function idGenerator(key){
 function parseObject(obj){ // передается распарсенный объект 
   let type = obj.constructor.name
   if(type === ("Object") || type ===("Array")){ // если объект или массив, перебираем ключи
-    var arr = []  // массив в который будет записываться структура собраная из компонентов
+    var arr = []  // массив в который будет записываться структура собранная из компонентов
     for (let key in obj){
       let keyType = obj[key].constructor.name   
       if(keyType === ("Object") || keyType ===("Array")){ 
@@ -59,7 +59,7 @@ function parseObject(obj){ // передается распарсенный об
                                               //и записываем вернувшийся массив
         let objectLength = Object.keys(obj[key]).length  // узнаем число ключей для отрисовки рядом с именем объекта
         arr.push(<ObjectComponent objectKey={key}                 // компонент в котрый передается имя ключа
-                                  objectValue={nestedArr}         // и массив вложеных элементов 
+                                  objectValue={nestedArr}         // и массив вложенных элементов 
                                   objectLength={objectLength} />)                                                                                               
       }else{ // если не объект или массив, записывам как простую строку 
         arr.push(<div>
@@ -130,7 +130,7 @@ class ObjectComponent extends React.Component {
 
   handleClick = () => {
     if (this.state.show === "caret-right"){                        
-      this.setState({show: 'caret-down', display: "block"})        // для отображения и скрытия вложености 
+      this.setState({show: 'caret-down', display: "block"})        // для отображения и скрытия вложенности 
     }else{
       this.setState({show: "caret-right", display: "none"})
     }
