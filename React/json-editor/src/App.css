@@ -4,14 +4,48 @@
 
 #root {
   display: flex;
+  justify-content: center;
 }
 
-.space {
-  width: 5em;
+.jsonEditor {
+  border: 1px solid black
+}
+
+.jsEditor {
+  width: 41.25em;
+  background-color: white;
+  border: 1px solid black
+}
+
+.ace_print-margin{
+  display: none;
+}
+
+.objectField{
+  padding-left: 0.5em;
+  overflow: auto;
+  height: 41.25em;
+}
+
+.String {
+  color: #00b300;
+}
+
+.Number {
+  color: red;
+}
+
+.Boolean{
+  color: #ffaa00;
 }
 
 [contentEditable], button:focus {
   outline: 0px solid transparent;
+}
+
+[contenteditable]:empty::before {
+    content: 'enter value';
+    opacity: 0.3;
 }
 
 button {
@@ -21,6 +55,26 @@ button {
   cursor:pointer;
   overflow: hidden;
   padding-left: 0;
+}
+
+.dropdown{
+  margin-right: 2em;
+}
+
+.formatButton {
+  padding-left: 0.3em;
+  font-size: 1.5em;
+}
+
+.formatButtonContainer{
+  background-color: #ffe6b3
+}
+
+.border{
+  height: 1.825em;
+  font-weight: bold;
+  text-align: center;
+  background-color: #f2f2f2;
 }
 
 li {
